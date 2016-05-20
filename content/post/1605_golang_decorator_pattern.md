@@ -20,25 +20,43 @@ Dieses Pattern ermöglicht es eine Methode um beliebige Funktionen zu erweitern.
 
 ### Decorator Gerüst für http.Client
 
-In dem Vortrag wird ein Decorator für `http.Client.Do(*http.Request)` als Beispiel erstellt. Die vier Schritte sehen als Code dann wie folgt aus:
+In dem Vortrag wird ein Decorator für `http.Client.Do(*http.Request)` als Beispiel erstellt. Hier wollen wir nun einen eigenen Typ verwenden:
 
 ```Go
-// A Client sends http Request and returns response and error
-type Client interface {
-	Do(*http.Request) (*http.Response, error)
+// Typ me ist Grundlage für das Beispiel.
+type me struct{}
+
+// Die Methode Do soll dabei durch einen Decorator erweitert werden.
+func (m *me) Do(s string) string {
+	fmt.Println("Ich mache etwas:")
+	fmt.Println(s)
+	out := "Fertig!\n------------------"
+	return out
+}
+```
+Das Grundgerüst für den Decorator sieht in dem Fall wie folgt aus:
+
+```Go
+// Schritt 1: Erstelle ein Interface, welches die zu erweiternde Methode
+// beinhaltet.
+type myInterface interface {
+	Do(string) string
 }
 
-// ClientFunc is a custom type for the implementation of the
-// Client interface
-type ClientFunc func(*http.Request) (*http.Response, error)
+// Schritt 2: Erstelle einen `type` welcher die Methode repräsentiert.
+type MyFunc func(string) string
 
-// Do implements the Client interface for the ClientFunc
-func (f ClientFunc) Do(r *http.Request) (*http.Response, error) {
-	return f(r)
+// Schritt 3: Erstelle eine Implementierung der Methode des Interface
+// aus 1. für den Typ aus 2.
+// Bei der Implementierung wird die Methode Do auf die eigentliche Funktion
+// gemapt. D.h. die Methode Do entspricht eigentlich der Funktion.
+func (f MyFunc) Do(s string) string {
+	return f(s)
 }
 
-// Decorator wraps a Client with extra behaviour
-type Decorator func(Client) Client
+// Schritt 4: Erstelle eine `type Decorator` Funktion, welches das
+// Interface aus 1. als Input und als Return beinhaltet.
+type Decorator func(myInterface) myInterface
 
 ```
 
@@ -47,25 +65,23 @@ type Decorator func(Client) Client
 Dier Erstellung eines Decorators als Funktion beinhaltet nun
 
 ```Go
-func MyDecorator(l *log.Logger) Decorator {
-  // Als Rückgabe wird eine Funktion vom Typ Decorator verwendet
-	return func(c Client) Client {
-    // Die Decorator Funktion gibt selber wieder eine Funktion vom Typ
-    // ClientFunc zurück.
-		return ClientFunc(func(r *http.Request) (*http.Response, error) {
-			// Ausführen einer zusätzlichen Funktion
-      l.Println("Ausgabe aus dem Decorator")
-      // Aufruf der zu dekorierenden Funktion über das Interface
-			return c.Do(r)
+// Erstellen eines Dekorators:
+// Definiere eine Funktion, welche einen Decorator zurück gibt
+func myDecorator(d string) Decorator {
+	// Der Decorator nimmt myInterface als Input und gibt
+	// dieses dekoriert wieder zurück.
+	return func(i myInterface) myInterface {
+		return MyFunc(func(s string) string {
+			fmt.Println(d)
+			s = "Noch was"
+			return i.Do(s)
 		})
 	}
 }
 ```
 
-### Test der Decorator Funktionen
+Das Beispiel Komplett im Playground: https://play.golang.org/p/fD8bqoFqeQ
 
+### Anwendung
 
-1) Ausgangslage: https://play.golang.org/p/gwiajfcoNa
-2) Fertig: https://play.golang.org/p/SanDbt_HhT
-https://play.golang.org/p/Drw62pH2zg
-https://play.golang.org/p/Jeof7B9L_Y
+Durch diese Aufteilung lassen sich unterschiedliche Aufgaben in eigene Funktionen aufteilen. Diese können separat sehr einfach getestet werden, das für den Test als Basis nur das definierte Interface verwendet werden muss.
