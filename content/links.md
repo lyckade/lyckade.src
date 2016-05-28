@@ -13,14 +13,19 @@ menu = "main"
 	* [Decorator Pattern Slides (pdf)](https://github.com/gophercon/2015-talks/blob/master/Tom%C3%A1s%20Senart%20-%20Embrace%20the%20Interface/ETI.pdf)
 * [GoUK 2015](https://blog.golang.org/gouk15)
 	
-### Linksammlungen
+### Spannende Links
 
+* [Achieving a Perfect SSL Labs Score with Go](https://blog.bracelab.com/achieving-perfect-ssl-labs-score-with-go)
 * [Awesome Go](https://github.com/avelino/awesome-go)
-* [go pattersn](http://tmrts.com/go-patterns/)
+* [Philipp Hauer: Design Patterns](http://www.philipphauer.de/study/se/design-pattern.php)
+* [Go patterns](http://tmrts.com/go-patterns/) (wird anscheinend nicht weiter gepflegt)
+* [Go Language Patterns](http://www.golangpatterns.info/) (anscheinend noch under construction)
+
 		
 ### Testing
 
 * [Ginkgo - BDD Testing Framework](https://github.com/onsi/ginkgo)
+* [Testing your (HTTP) handlers in Go](http://elithrar.github.io/article/testing-http-handlers-go/)
 		
 ### Tutorials
 
