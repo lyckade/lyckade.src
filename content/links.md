@@ -15,6 +15,7 @@ menu = "main"
 	
 ### Spannende Links
 
+* [7 common mistakes in Go (2015)](http://spf13.com/presentation/7-common-mistakes-in-go-2015/)
 * [Achieving a Perfect SSL Labs Score with Go](https://blog.bracelab.com/achieving-perfect-ssl-labs-score-with-go)
 * [Awesome Go](https://github.com/avelino/awesome-go)
 * [Philipp Hauer: Design Patterns](http://www.philipphauer.de/study/se/design-pattern.php)
