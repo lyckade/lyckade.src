@@ -3,7 +3,7 @@ languageCode = "de"
 title = "Go lycka go"
 canonifyurls = true
 MetaDataFormat = "toml"
-theme = "lyckade"
+theme = "ghostwriter"
 paginate = 10
 pygmentsuseclasses = true
 
